@@ -15,9 +15,17 @@ pub fn read(path: &Path) -> Vec<Vec<char>> {
 
 pub fn write(file: &Path, lines: Vec<Vec<char>>) {
     let mut file = File::create(file).unwrap();
-    for characters in lines {
+    for (index, characters) in lines.iter().enumerate() {
         let line: String = characters.iter().collect();
-        file.write_all((line + "\n").as_bytes()).unwrap();
+        file.write_all(
+            if index + 1 == lines.len() {
+                line
+            } else {
+                line + "\n"
+            }
+            .as_bytes(),
+        )
+        .unwrap();
     }
 
     file.flush().unwrap();
